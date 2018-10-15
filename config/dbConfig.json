@@ -1,0 +1,13 @@
+{
+  "user": "db-user-name",
+  "password": "db-user-password",
+  "server": "db-server-ip",
+  "port": 9999,
+  "database": "db-name",
+  "options": {
+    "encrypt": false
+  },
+  "pool": {
+    "acquireTimeoutMillis": 15000
+  }
+}
