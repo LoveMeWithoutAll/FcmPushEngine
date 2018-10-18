@@ -20,13 +20,25 @@ const dailyRotateFileTransport = new transports.DailyRotateFile({
 	maxFiles: "14d"
 })
 
+const errorStackFormat = format(info => {
+	if (info instanceof Error) {
+		return Object.assign({}, info, {
+			stack: info.stack,
+			message: info.message
+		})
+	}
+	return info
+})
+
 const logger = createLogger({
 	level: env === "development" ? "debug" : "info",
 	format: format.combine(
 		format.timestamp({
 			format: "YYYY-MM-DD HH:mm:ss"
 		}),
-		format.json()
+		format.json(),
+		format.prettyPrint(),
+		errorStackFormat()
 	),
 	transports: [
 		new transports.Console({

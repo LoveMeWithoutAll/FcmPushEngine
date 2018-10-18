@@ -5,7 +5,7 @@ let connectionPool
 
 sql.on("error", err => {
 	sql.close()
-	onDbError(err, "on mssql error")
+	onDbError(err, "mssql error")
 })
 
 const getConnectionPool = async () => {
@@ -15,7 +15,7 @@ const getConnectionPool = async () => {
 			onDbError(err, "on getConnectionPool error")
 		})
 	} catch (err) {
-		onDbError(err, "on getConnectionPool error in catch")
+		onDbError(err, "getConnectionPool error in catch")
 	}
 }
 
@@ -23,7 +23,7 @@ const closeConnectionPool = async () => {
 	try {
 		await connectionPool.close()
 	} catch (err) {
-		onDbError(err, "on closeConnectionPool error")
+		onDbError(err, "closeConnectionPool error")
 	}
 }
 
