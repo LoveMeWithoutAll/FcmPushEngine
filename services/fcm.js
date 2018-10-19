@@ -30,6 +30,8 @@ const sendMsg = msg => {
 }
 
 const sendMsgList = list => {
+	if (typeof list === "undefined") return
+	if (!Array.isArray(list)) throw Error("getPushList didn't return Array!")
 	list.forEach(obj => {
 		let msg = {
 			data: {
