@@ -11,8 +11,8 @@ sql.on("error", err => {
 const getConnectionPool = async () => {
 	try {
 		connectionPool = await new sql.ConnectionPool(dbConfig).connect()
-		connectionPool.on("error", err => {
-			connectionPool.close()
+		connectionPool.on("error", async err => {
+			await closeConnectionPool()
 			onDbError(err, "getConnectionPool error")
 		})
 	} catch (err) {
