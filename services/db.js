@@ -28,8 +28,19 @@ const closeConnectionPool = async () => {
 	}
 }
 
+const resetConnectionPool = async () => {
+	try {
+		onDbError(null, "reset connection pool")
+		await closeConnectionPool()
+		await getConnectionPool()
+	} catch (err) {
+		onDbError(err, "resetConnectionPool error")
+	}
+}
+
 const getPushList = async () => {
 	try {
+		if (typeof connectionPool === "undefined") return []
 		let result = await connectionPool.request()
 		// .input("PARAM1", sql.NVarChar, "getList")
 		// .execute("b.dbo.stored-procedure-name")
@@ -55,5 +66,5 @@ module.exports = {
 	getPushList: getPushList,
 	pushFeedback: pushFeedback,
 	getConnectionPool: getConnectionPool,
-	closeConnectionPool: closeConnectionPool
+	resetConnectionPool: resetConnectionPool
 }
