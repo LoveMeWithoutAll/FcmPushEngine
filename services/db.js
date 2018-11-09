@@ -19,6 +19,7 @@ const getConnectionPool = async () => {
 	} catch (err) {
 		connectionPool = null
 		onDbError(err, "getConnectionPool error in catch")
+		throw new Error(err)
 	}
 }
 
@@ -28,6 +29,7 @@ const closeConnectionPool = async () => {
 	} catch (err) {
 		connectionPool = null
 		onDbError(err, "closeConnectionPool error")
+		throw new Error(err)
 	}
 }
 
@@ -38,6 +40,7 @@ const resetConnectionPool = async () => {
 		await getConnectionPool()
 	} catch (err) {
 		onDbError(err, "resetConnectionPool error")
+		throw new Error(err)
 	}
 }
 
@@ -50,7 +53,7 @@ const getPushList = async () => {
 		return result.recordset
 	} catch (err) {
 		onDbError(err, "getPushList")
-		return []
+		throw new Error(err)
 	}
 }
 
@@ -62,6 +65,7 @@ const pushFeedback = async (sendResult) => {
 		// .execute("b.dbo.stored-procedure-name")
 	} catch (err) {
 		onDbError(err, "insertMsgCheckup")
+		throw new Error(err)
 	}
 }
 
