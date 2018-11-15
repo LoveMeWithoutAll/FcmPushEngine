@@ -3,17 +3,17 @@ promiseFinally.shim()
 
 const fcmService = require("./services/fcm")
 const dbService = require("./services/db")
-const { onStart, onServerError } = require("./services/log")
+const { onStart, onDBConncetion, onServerError } = require("./services/log")
 
-const sendPush = async () => {
+const sendPush = () => {
 	dbService.getPushList()
 		.then((msgList) => {
 			fcmService.sendMsgList(msgList)
 		})
-		.catch(async (error) => {
+		.catch((error) => {
 			onServerError(error)
 		})
-		.finally(async () => {
+		.finally(() => {
 			setTimeout(() => {
 				sendPush()
 			}, 1000)
@@ -21,6 +21,13 @@ const sendPush = async () => {
 }
 
 onStart()
-fcmService.init()
 dbService.getConnectionPool()
+	.then((connectionPool) => {
+		onDBConncetion(connectionPool)
+		fcmService.init()
+		sendPush()
+	}, (error) => {
+		onServerError(error)
+		dbService.resetConnectionPool()
+	})
 sendPush()

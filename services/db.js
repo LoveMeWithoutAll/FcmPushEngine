@@ -1,3 +1,4 @@
+const Promise = require("es6-promise").Promise
 const sql = require("mssql")
 const dbConfig = require("../config/dbConfig.json")
 const { onDbError } = require("./log")
@@ -11,10 +12,14 @@ sql.on("error", err => {
 const getConnectionPool = async () => {
 	try {
 		if (connectionPool) return
-		connectionPool = await new sql.ConnectionPool(dbConfig).connect()
-		connectionPool.on("error", async err => {
-			await closeConnectionPool()
-			onDbError(err, "getConnectionPool error")
+		return new Promise( async (resolve, reject) => {
+			connectionPool = await new sql.ConnectionPool(dbConfig).connect()
+			connectionPool.on("error", err => {
+				onDbError(err, "getConnectionPool error")
+				reject(Error(err))
+			})
+			if (connectionPool) resolve(connectionPool)
+			reject(Error("getConnectionPool failed"))
 		})
 	} catch (err) {
 		connectionPool = null
