@@ -12,6 +12,7 @@ const sendPush = () => {
 		})
 		.catch((error) => {
 			onServerError(error)
+			process.exit()
 		})
 		.finally(() => {
 			setTimeout(() => {
@@ -28,6 +29,5 @@ dbService.getConnectionPool()
 		sendPush()
 	}, (error) => {
 		onServerError(error)
-		dbService.resetConnectionPool()
+		process.exit()
 	})
-sendPush()

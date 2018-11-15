@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "pm2 start ecosystem.config.js && pm2 monit"
+  },
   "dependencies": {
     "es6-promise": "^4.2.5",
     "firebase-admin": "^6.0.0",

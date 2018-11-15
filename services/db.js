@@ -7,6 +7,7 @@ let connectionPool
 sql.on("error", err => {
 	sql.close()
 	onDbError(err, "mssql error")
+	throw new Error(err)
 })
 
 const getConnectionPool = async () => {
@@ -24,27 +25,6 @@ const getConnectionPool = async () => {
 	} catch (err) {
 		connectionPool = null
 		onDbError(err, "getConnectionPool error in catch")
-		throw new Error(err)
-	}
-}
-
-const closeConnectionPool = async () => {
-	try {
-		await connectionPool.close()
-	} catch (err) {
-		connectionPool = null
-		onDbError(err, "closeConnectionPool error")
-		throw new Error(err)
-	}
-}
-
-const resetConnectionPool = async () => {
-	try {
-		onDbError(null, "reset connection pool")
-		await closeConnectionPool()
-		await getConnectionPool()
-	} catch (err) {
-		onDbError(err, "resetConnectionPool error")
 		throw new Error(err)
 	}
 }
@@ -77,6 +57,5 @@ const pushFeedback = async (sendResult) => {
 module.exports = {
 	getPushList: getPushList,
 	pushFeedback: pushFeedback,
-	getConnectionPool: getConnectionPool,
-	resetConnectionPool: resetConnectionPool
+	getConnectionPool: getConnectionPool
 }

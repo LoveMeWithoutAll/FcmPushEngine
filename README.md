@@ -16,13 +16,22 @@ This Application get messages from MS SQL DB, and Send to individual devices.
 1. Write codes for push feedback on service/db.js pushFeedback function
 
 ## Project setup
+
+```
+npm install -g pm2
+```
+
+```
+pm2 install pm2-logrotate
+```
+
 ```
 npm install
 ```
 
 ## Run
 ```
-node server
+npm start
 ```
 
 ### Lints and fixes files
